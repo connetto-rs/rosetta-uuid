@@ -175,11 +175,16 @@ jobs:
           components: llvm-tools-preview
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y libpq-dev libsqlite3-dev
-      - name: Install tarpaulin
-        uses: taiki-e/install-action@cargo-tarpaulin
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@8cca0918f8471c33515202b73f56ab27f2bed283 # v2.87.29
+        with:
+          tool: cargo-llvm-cov
       - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2
       - name: Generate coverage
-        run: cargo tarpaulin --all-features --engine=llvm --out xml --workspace --run-types AllTargets --run-types Doctests
+        run: |
+          mkdir -p target/coverage
+          cargo llvm-cov --workspace --all-features --all-targets --no-report
+          cargo llvm-cov --workspace --all-features --doc --no-clean --lcov --output-path target/coverage/coverage.lcov
         env:
           DATABASE_URL: postgres://postgres@localhost:5432/postgres
           REDIS_URL: redis://127.0.0.1/
@@ -187,6 +192,7 @@ jobs:
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: target/coverage/coverage.lcov
           fail_ci_if_error: false
 
   test_wasm:
