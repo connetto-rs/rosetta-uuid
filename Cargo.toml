@@ -5,8 +5,8 @@ edition = "2024"
 description = "A wrapper implementation of UUID providing binary diesel bindings for SQLite and PostgreSQL, and redis serialization support."
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/earth-metabolome-initiative/rosetta-uuid"
-homepage = "https://github.com/earth-metabolome-initiative/rosetta-uuid"
+repository = "https://github.com/connetto-rs/rosetta-uuid"
+homepage = "https://github.com/connetto-rs/rosetta-uuid"
 keywords = ["uuid", "diesel", "redis", "postgres", "sqlite"]
 categories = ["database", "data-structures", "encoding"]
 
